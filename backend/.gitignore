@@ -2,5 +2,25 @@
 __pycache__/
 .env
 .vscode
-.db/
 instance/
+
+# Ignore Python compiled files
+*.py[cod]
+
+# Ignore local environment files
+.env
+*.env
+*.sqlite3
+
+# Ignore SQLITE db files
+*.db
+.db/
+
+# Ignore virtual environments
+venv/
+.virtualenv/
+
+# Ignore migration-related cache files
+*.log
+*.temp
+*.pid
