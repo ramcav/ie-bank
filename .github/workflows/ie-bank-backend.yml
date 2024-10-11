@@ -86,4 +86,4 @@ jobs:
       id: deploy-to-webapp
       with:
         app-name: ${{ env.BACKEND_WEBAPP_DEV }}
-        package: ./backend/
+        package: .
