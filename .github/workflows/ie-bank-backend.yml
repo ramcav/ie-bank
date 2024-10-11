@@ -71,7 +71,7 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: python-app
-        path: python-app/
+        path: .
 
     - uses: azure/login@v1
       with:
@@ -82,4 +82,4 @@ jobs:
       id: deploy-to-webapp
       with:
         app-name: ${{ env.BACKEND_WEBAPP_DEV }}
-        package: python-app/
+        package: ./backend/
