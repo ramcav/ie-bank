@@ -79,7 +79,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: List backend directory
-      run: ls -R ./backend/
+      run: ls
     
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v3
