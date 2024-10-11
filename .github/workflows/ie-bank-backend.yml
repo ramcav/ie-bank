@@ -41,6 +41,10 @@ jobs:
     - name: Test with pytest
       env:
         ENV: ${{ vars.ENV }}
+        DBUSER: ${{ secrets.DBUSER }}
+        DBPASS: ${{ secrets.DBPASS }}
+        DBHOST: ${{ secrets.DBHOST }}
+        DBNAME: ${{ secrets.DBNAME }} 
       run: |
         python -m pytest --cov= backend -v
     - name: Upload artifact for deployment jobs
