@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - infrastructure
-    paths: 
-      - 'infrastructure/**'
-      - '!infrastructure/scripts/**'
   workflow_dispatch:
 
 env:
