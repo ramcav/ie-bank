@@ -2,8 +2,8 @@ name: ie-bank-backend
 
 on:
   push:
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - 'backend'
   workflow_dispatch:
 
 permissions:
@@ -11,14 +11,13 @@ permissions:
   id-token: write
 
 env:
-  BACKEND_WEBAPP_DEV: aguadamillas-be-dev
+  BACKEND_WEBAPP_DEV: rmendez-be-dev
 
 jobs:
   build:
     
     runs-on: ubuntu-latest
-    env:
-      ENV: ghci
+    environment: 'ie-bank-backend-dev'
 
     steps:
     - uses: actions/checkout@v3
@@ -40,10 +39,12 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
+      env:
+        ENV: ${{ vars.ENV }}
       run: |
-        python -m pytest --cov=iebank_api -v
+        python -m pytest --cov= backend -v
     - name: Upload artifact for deployment jobs
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: python-app
         path: |
@@ -58,7 +59,7 @@ jobs:
 
     steps:
     - name: Download artifact from build job
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: python-app
         path: .
@@ -68,7 +69,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: 'Deploy to Azure Web App'
-      uses: azure/webapps-deploy@v2
+      uses: azure/webapps-deploy@v3
       id: deploy-to-webapp
       with:
         app-name: ${{ env.BACKEND_WEBAPP_DEV }}
