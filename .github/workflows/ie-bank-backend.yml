@@ -51,7 +51,7 @@ jobs:
         DBHOST: ${{ secrets.DBHOST }}
         DBNAME: ${{ secrets.DBNAME }}
       run: |
-        python -m pytest --cov= iebank_api -v
+        python -m pytest --cov=backend --cov-report=term-missing backend/tests -v
     
     - name: Upload artifact for deployment jobs
       uses: actions/upload-artifact@v3
