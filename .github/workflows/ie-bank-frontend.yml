@@ -35,7 +35,7 @@ jobs:
         working-directory: frontend
         run: |
           npm install
-          npm run build --mode development --dest dist-dev
+          npm run build:dev
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
@@ -61,7 +61,7 @@ jobs:
         working-directory: frontend
         run: |
           npm install
-          npm run build --mode uat --dest dist-uat
+          npm run build:uat
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
