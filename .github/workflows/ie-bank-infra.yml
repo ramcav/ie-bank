@@ -26,7 +26,7 @@ jobs:
       run: az bicep build --file infrastructure/main.bicep
 
   deploy-dev:
-#   if: github.ref == 'refs/heads/dev'
+#   if: github.event != 'pull_request'
     runs-on: ubuntu-latest
     needs: build
     environment:
@@ -53,7 +53,7 @@ jobs:
         deploymentName: ${{ env.USER_ALIAS }}
 
   deploy-uat:
-    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+    if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main' && github.event.pull_request.head.ref == 'backend'
     runs-on: ubuntu-latest
     needs: build
     environment:
