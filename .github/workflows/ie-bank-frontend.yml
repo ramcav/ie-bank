@@ -61,7 +61,7 @@ jobs:
         working-directory: frontend
         run: |
           npm install
-          npm run build:uat
+          npm run build
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
