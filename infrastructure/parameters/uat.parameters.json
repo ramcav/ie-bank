@@ -6,19 +6,19 @@
             "value": "nonprod"
         },
         "postgreSQLServerName": {
-            "value": "rmendez-dbsrv-dev"
+            "value": "rmendez-dbsrv-uat"
         },
         "postgreSQLDatabaseName": {
-            "value": "rmendez-db-dev"
+            "value": "rmendez-db-uat"
         },
         "appServicePlanName": {
-            "value": "rmendez-asp-dev"
+            "value": "rmendez-asp-uat"
         },
         "appServiceAPIAppName": {
-            "value": "rmendez-be-dev"
+            "value": "rmendez-be-uat"
         },
         "appServiceAppName": {
-            "value": "rmendez-fe-dev"
+            "value": "rmendez-fe-uat"
         },
         "location": {
             "value": "North Europe"
