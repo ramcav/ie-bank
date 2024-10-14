@@ -65,7 +65,7 @@ jobs:
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
-          name: ${{env.FRONTEND_WEBAPP_UAT}}$
+          name: node-app-uat
           path: frontend/dist-uat/
 
   deploy:
@@ -90,7 +90,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: ${{ env.FRONTEND_WEBAPP_DEV }}
+          app-name: node-app-dev
           package: frontend/dist-dev/
 
   deploy-uat:
@@ -115,5 +115,5 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: ${{ env.FRONTEND_WEBAPP_UAT }}
+          app-name: node-app-uat
           package: frontend/dist-uat/
