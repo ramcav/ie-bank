@@ -5,6 +5,10 @@ on:
     branches:
       - infrastructure
 
+  pull_request:
+    branches:
+      - main
+
   workflow_dispatch:
 
 env:
