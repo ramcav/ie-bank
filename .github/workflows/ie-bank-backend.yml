@@ -17,7 +17,7 @@ permissions:
 
 env:
   BACKEND_WEBAPP_DEV: rmendez-be-dev
-  BACKEND_WEBAPP_UAT: rmendez-be-uat
+  BACKEND_WEBAPP_UAT: rmendez1-be-uat
 
 
 jobs:
