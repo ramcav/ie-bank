@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "environmentType": {
+            "value": "prod"
+        },
+        "postgreSQLServerName": {
+            "value": "rmendez1-dbsrv-uat"
+        },
+        "postgreSQLDatabaseName": {
+            "value": "rmendez1-db-uat"
+        },
+        "appServicePlanName": {
+            "value": "rmendez1-asp-uat"
+        },
+        "appServiceAPIAppName": {
+            "value": "rmendez1-be-uat"
+        },
+        "appServiceAppName": {
+            "value": "rmendez1-fe-uat"
+        },
+        "location": {
+            "value": "North Europe"
+        }
+    }
+}

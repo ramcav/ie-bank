@@ -5,6 +5,10 @@ on:
     branches:
       - infrastructure
 
+  pull_request:
+    branches:
+      - main
+
   workflow_dispatch:
 
 env:
@@ -17,7 +21,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-
       # Checkout code
     - uses: actions/checkout@main
 
@@ -25,15 +28,21 @@ jobs:
     - name: Run Bicep linter
       run: az bicep build --file infrastructure/main.bicep
 
+      # Upload Bicep build artifact
+    - name: Upload Bicep build artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: bicep-build
+        path: infrastructure/main.bicep
+
   deploy-dev:
-#   if: github.ref == 'refs/heads/dev'
+    if: github.event_name != 'pull_request'  # This ensures the job does not run on pull requests
     runs-on: ubuntu-latest
     needs: build
     environment:
       name: 'ie-bank-backend-dev'
 
     steps:
-
       # Checkout code
     - uses: actions/checkout@main
     
@@ -53,28 +62,27 @@ jobs:
         deploymentName: ${{ env.USER_ALIAS }}
 
   deploy-uat:
-    if: github.ref == 'refs/heads/main' && github.head_ref == 'infrastructure'
+    if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main' && github.event.pull_request.head.ref == 'infrastructure'
     runs-on: ubuntu-latest
     needs: build
     environment:
       name: 'UAT'
 
     steps:
-      - uses: actions/checkout@main
-      - name: Download Bicep build artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: bicep-build
+      # Checkout code
+    - uses: actions/checkout@main
+    
+      # Log into Azure
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Deploy to uat
-        uses: azure/arm-deploy@v2
-        with:
-          subscriptionId: ${{ env.SUBSCRIPTION_ID }}
-          resourceGroupName: ${{ env.RESOURCE_GROUP_UAT }}
-          template: ./main.bicep
-          parameters: ./parameters/uat.parameters.json appServiceAPIEnvVarENV=${{ vars.ENV }} appServiceAPIEnvVarDBHOST=${{ vars.DBHOST }} appServiceAPIEnvVarDBNAME=${{ vars.DBNAME }} appServiceAPIEnvVarDBPASS=${{ secrets.DBPASS }} appServiceAPIDBHostDBUSER=${{ secrets.DBUSER }} appServiceAPIDBHostFLASK_APP=${{ vars.FLASK_APP }} appServiceAPIDBHostFLASK_DEBUG=${{ vars.FLASK_DEBUG }}
-          deploymentName: ${{ env.USER_ALIAS }}-uat
+      # Deploy Bicep file
+    - name: deploy
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ env.SUBSCRIPTION_ID_UAT }}
+        resourceGroupName: ${{ env.RESOURCE_GROUP_UAT }}
+        template: infrastructure/main.bicep
+        parameters: infrastructure/parameters/uat.parameters.json appServiceAPIEnvVarENV=${{ vars.ENV }} appServiceAPIEnvVarDBHOST=${{ vars.DBHOST }} appServiceAPIEnvVarDBNAME=${{ vars.DBNAME }} appServiceAPIEnvVarDBPASS=${{ secrets.DBPASS }} appServiceAPIDBHostDBUSER=${{ secrets.DBUSER }} appServiceAPIDBHostFLASK_APP=${{ vars.FLASK_APP }} appServiceAPIDBHostFLASK_DEBUG=${{ vars.FLASK_DEBUG }}
+        deploymentName: ${{ env.USER_ALIAS }}-uat
